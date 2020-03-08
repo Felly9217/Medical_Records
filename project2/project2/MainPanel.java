@@ -8,9 +8,8 @@ import patientpredictor.PatientCollection;
 
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 
@@ -19,13 +18,13 @@ public class MainPanel extends JPanel{
 	private final int WIDTH = 800, HEIGHT = 500;
 	private JPanel panel;
 	private JPanel panel_1;
+	private JSplitPane splitPane;
 	
 	private static PatientCollection myPats;
 	private Patient p;
+	private SearchComboBox s;
+	private OpenAll o;	
 	
-	private JTextField textField;
-	private JTextArea textArea;
-	private JScrollPane scroll;
 	private JComboBox comboBox;
 	
 	private JButton btnEdit;
@@ -35,29 +34,39 @@ public class MainPanel extends JPanel{
 	private JRadioButton rdbtnDp;
 	private JRadioButton rdbtnCr;
 	
+	private JTable displayAllPatients;
+	private JScrollPane scrollPane;
+	private String[][] data;
+	private String[] columnNames;
+	
+	private JTable displayAPatient;
+	private String[][] aData;
+	private JScrollPane scrollPane2;
 	
 	public MainPanel() {
 		myPats = new PatientCollection();
 		setLayout(null);
-	
+
 		
 	    setPreferredSize (new Dimension(WIDTH, HEIGHT));
 	    setBackground (Color.white);
 	    
 	    // panel 1
 	    panel = new JPanel();
-	    panel.setBounds(0, 0, 150, HEIGHT);
 	    
 	    // panel 2
 	    panel_1 = new JPanel();
-	    panel_1.setBounds(150, 22, 650, HEIGHT);
 	    
+	    s = new SearchComboBox();
+	    o = new OpenAll();
+	    columnNames = new String[]{"ID",
+                "Predict",
+                "Result",
+                "Protein 2358",
+                "Protein 3697"};
 	    
 	    
 	    //open all button and display all in panel1 
-	    textArea = new JTextArea();
-		textArea.setEditable(false);
-		scroll = new JScrollPane (textArea);
 	    JButton btnOpenFile = new JButton("Open All Patients");
 	    btnOpenFile.addActionListener(new OpenAll());
 	    btnOpenFile.setBounds(5, 100, 135, 23);
@@ -66,8 +75,6 @@ public class MainPanel extends JPanel{
 	    
 	    
 	    // search button to display Combox box to get a patient ID
-	    textField = new JTextField();
-	    textField.setBounds(50, 120, 555, 23);
 	    comboBox = new JComboBox();
 	    JButton btnSearch = new JButton("Search");
 	    btnSearch.addActionListener(new SearchComboBox());
@@ -128,22 +135,22 @@ public class MainPanel extends JPanel{
 	    JMenu mnFile = new JMenu("File");
 	    menuBar.add(mnFile);
 	    
-	    JMenuItem mntmAdd = new JMenuItem("Add");
-	    mntmAdd.addActionListener(new ActionListener() {
-	    	public void actionPerformed(ActionEvent e) {
-	    		myPats.addPatientsFromFile("./newdata.csv");
-	    	}
-	    });
+	    JMenuItem mntmAdd = new JMenuItem("Add New File");
+	    mntmAdd.addActionListener(new AddNewFile());
 	    mnFile.add(mntmAdd);
 	 
 	    
 	    
 	    // add panels
-	    add(panel);
+	    //add(panel);
 	    panel.setLayout(null);
-	    add(panel_1);
+	    //add(panel_1);
 	    panel_1.setLayout(null);
-
+	    splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panel, panel_1);
+	    splitPane.setBounds(0, 22, WIDTH, HEIGHT);
+	    splitPane.setDividerLocation(150);
+	    splitPane.setEnabled(false);
+	    add(splitPane);
 	    
 	}
 	
@@ -151,13 +158,46 @@ public class MainPanel extends JPanel{
 		myPats.writingToFile("./textwrite.csv");
 	}
 	
+	public void tableForOnePatient() {
+		aData = new String[1][5];
+	    Patient text = myPats.getPatient(comboBox.getSelectedItem().toString());
+	    aData[0] = new String[]{text.getId(), 
+    			text.getPredict(),
+    			text.getResult(),
+    			Double.toString(text.getGenome().get(2358)),
+    			Double.toString(text.getGenome().get(3697))};
+	    displayAPatient = new JTable(aData, columnNames);
+	    displayAPatient.setFillsViewportHeight(true);
+	    displayAPatient.setDefaultEditor(Object.class, null);
+	    displayAPatient.getTableHeader().setReorderingAllowed(false);
+	    scrollPane2 = new JScrollPane(displayAPatient);
+	    scrollPane2.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
+	    scrollPane2.setBounds(50, 120, 555, 38);
+	    panel_1.add(scrollPane2);
+	}
+	
+	
 	private class OpenAll implements ActionListener{
 		public void actionPerformed(ActionEvent e) {
     		panel_1.removeAll();
-    		textArea.setText(myPats.toString());
-    	    scroll.setBounds(50, 66, 600, 300);
-    	    scroll.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
-    	    panel_1.add(scroll);
+    		data = new String[myPats.getIds().size()][5];
+    		int i = 0;
+    		   for(String myInt : myPats.getIds()) {
+    		    	data[i] = new String[]{myPats.getPatient(myInt).getId(), 
+    		    			myPats.getPatient(myInt).getPredict(),
+    		    			myPats.getPatient(myInt).getResult(),
+    		    			Double.toString(myPats.getPatient(myInt).getGenome().get(2358)),
+    		    			Double.toString(myPats.getPatient(myInt).getGenome().get(3697))};
+    		    	i++;
+    		    }
+    		    displayAllPatients = new JTable(data, columnNames);
+    		    displayAllPatients.setFillsViewportHeight(true);
+    		    displayAllPatients.setDefaultEditor(Object.class, null);
+    		    displayAllPatients.getTableHeader().setReorderingAllowed(false);
+    		    scrollPane = new JScrollPane(displayAllPatients);
+    		    scrollPane.setBounds(50, 66, 550, 300);
+    		    scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
+    		    panel_1.add(scrollPane);
     	    revalidate();
     	    repaint();
 		}
@@ -171,9 +211,7 @@ public class MainPanel extends JPanel{
     	    comboBox.addActionListener(new ActionListener() {
     	    	public void actionPerformed(ActionEvent e) {
     	    		panel_1.removeAll();
-    	    	    Patient text = myPats.getPatient(comboBox.getSelectedItem().toString());
-    	    	    textField.setText(text.toString());
-    	    	    panel_1.add(textField);
+    	    		tableForOnePatient();
     	    	    panel_1.add(btnEdit);
     	    	    panel_1.add(comboBox);
     	    	    revalidate();
@@ -182,10 +220,8 @@ public class MainPanel extends JPanel{
     	    });
     	    ArrayList<String> ids = myPats.getIds();
     	    comboBox.setModel(new DefaultComboBoxModel(ids.toArray()));
-    	    Patient text = myPats.getPatient(comboBox.getSelectedItem().toString());
-    	    textField.setText(text.toString());
     	    comboBox.setBounds(50, 66, 224, 23);
-    	    panel_1.add(textField);
+    	    tableForOnePatient();
     	    panel_1.add(btnEdit);
     	    panel_1.add(comboBox);
     	    revalidate();
@@ -200,8 +236,10 @@ public class MainPanel extends JPanel{
     		p = myPats.getPatient(comboBox.getSelectedItem().toString());
     	    if(p.getResult().equals("DP")) {
     	    	rdbtnDp.setSelected(true);
-    	    } else {
     	    	rdbtnCr.setSelected(false);
+    	    } else if (p.getResult().equals("CR")){
+    	    	rdbtnCr.setSelected(true);
+    	    	rdbtnDp.setSelected(false);
     	    }
     		rdbtnDp.setVisible(true);
     		rdbtnCr.setVisible(true);
@@ -220,9 +258,8 @@ public class MainPanel extends JPanel{
     		panel_1.remove(btnRemove);
     		panel_1.remove(rdbtnDp);
     		panel_1.remove(rdbtnCr);
-    	    Patient text = myPats.getPatient(comboBox.getSelectedItem().toString());
-    	    textField.setText(text.toString());
-    		panel_1.add(textField);
+    		panel_1.remove(scrollPane2);
+    		tableForOnePatient();
     		panel_1.add(btnEdit);
     		repaint();		
 		}
@@ -236,17 +273,21 @@ public class MainPanel extends JPanel{
                     JOptionPane.YES_NO_OPTION,
                     JOptionPane.QUESTION_MESSAGE);
             if(result == JOptionPane.YES_OPTION){
-                panel_1.removeAll();
      	    	myPats.removePatient(comboBox.getSelectedItem().toString());
-    	    	ArrayList<String> ids = myPats.getIds();
-    	    	comboBox.setModel(new DefaultComboBoxModel(ids.toArray()));
-	    	    Patient text = myPats.getPatient(comboBox.getSelectedItem().toString());
-	    	    textField.setText(text.toString());
-	    	    panel_1.add(textField);
-    	    	panel_1.add(btnEdit);
-    	    	panel_1.add(comboBox);
-    	    	repaint();	
+            	s.actionPerformed(e);
             }
+		}
+	}
+	
+	
+	private class AddNewFile implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			JFileChooser jfc = new JFileChooser("./");
+			int returnValue = jfc.showOpenDialog(null);
+			if (returnValue == JFileChooser.APPROVE_OPTION) {
+				myPats.addPatientsFromFile(jfc.getSelectedFile().toString());  		
+			}
+			o.actionPerformed(e);
 		}
 	}
 }
