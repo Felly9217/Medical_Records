@@ -7,7 +7,7 @@ import java.awt.event.WindowEvent;
 
 public class MainFrame {
 	public static void main(String[] args) {
-		JFrame frame = new JFrame("MainFrame");
+		JFrame frame = new JFrame("Med Records");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setSize(800, 500);
 		
