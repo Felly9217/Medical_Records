@@ -84,7 +84,7 @@ public class MainPanel extends JPanel{
 	    		front.createFrontPage();
 	    	}
 	    });
-	    ImageIcon tempImage = new ImageIcon("ark-logo.png");
+	    ImageIcon tempImage = new ImageIcon(MainPanel.class.getResource("/resources/ark-logo.png"));
 	    Image image = tempImage.getImage().getScaledInstance(140, 70, java.awt.Image.SCALE_SMOOTH);
         label.setIcon(new ImageIcon(image));
         Dimension size = label.getPreferredSize();
@@ -260,7 +260,7 @@ public class MainPanel extends JPanel{
 		    panel_1.add(lblDeveloperLongtinHang);
 		    
 		    label2 = new JLabel();
-		    tempImage2 = new ImageIcon ("giphy.gif");
+		    tempImage2 = new ImageIcon (MainPanel.class.getResource("/resources/giphy.gif"));
 		    image2 = tempImage2.getImage().getScaledInstance(100, 100, java.awt.Image.SCALE_DEFAULT);
 	        label2.setIcon(new ImageIcon(image2));
 	        label2.setBounds(275, 285, 100, 100);
