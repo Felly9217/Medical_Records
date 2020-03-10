@@ -8,15 +8,21 @@ import patientpredictor.PatientCollection;
 
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.awt.event.ActionEvent;
 import java.awt.event.ItemListener;
 import java.awt.event.ItemEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.io.File;
+import java.io.FileOutputStream;
+import java.io.OutputStreamWriter;
 
 
 public class MainPanel extends JPanel{
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private final int WIDTH = 800, HEIGHT = 500;
 	private JPanel panel;
 	private JPanel panel_1;
@@ -53,7 +59,6 @@ public class MainPanel extends JPanel{
 	private JLabel label2;
 	private ImageIcon tempImage2;
 	private Image image2;
-	private Dimension size2;
 	
 	public MainPanel() {
 		/*
@@ -128,21 +133,21 @@ public class MainPanel extends JPanel{
 	     */
 	    btnEdit = new JButton("Edit");
 	    btnEdit.addActionListener(new EditButton());
-	    btnEdit.setBounds(50, 175, 85, 23);
+	    btnEdit.setBounds(50, 250, 85, 23);
 	    
 	    /*
 	     * done button
 	     */
 	    btnDone = new JButton("Done");
 	    btnDone.addActionListener(new DoneButton());
-	    btnDone.setBounds(50, 175, 85, 23);   
+	    btnDone.setBounds(50, 250, 85, 23);   
 	    
 	    /*
 	     * remove button
 	     */
 	    btnRemove = new JButton("Remove");
 	    btnRemove.addActionListener(new RemoveButton());
-	    btnRemove.setBounds(50, 210, 85, 23);   
+	    btnRemove.setBounds(50, 285, 85, 23);   
 	        
 	    /*
 	     * adding CR and DP radio Buttons	    
@@ -153,7 +158,7 @@ public class MainPanel extends JPanel{
 	    		p.setResult("DP");
 	    	}
 	    });
-	    rdbtnDp.setBounds(157, 175, 53, 23);
+	    rdbtnDp.setBounds(157, 250, 53, 23);
 	    
 	    rdbtnCr = new JRadioButton("CR");
 	    rdbtnCr.addItemListener(new ItemListener() {
@@ -161,7 +166,7 @@ public class MainPanel extends JPanel{
 	    		p.setResult("CR");
 	    	}
 	    });
-	    rdbtnCr.setBounds(157, 210, 53, 23);
+	    rdbtnCr.setBounds(157, 285, 53, 23);
 	    
 	    btnGrp = new ButtonGroup();
 	    btnGrp.add(rdbtnCr);
@@ -181,26 +186,35 @@ public class MainPanel extends JPanel{
 	    mntmAdd.addActionListener(new AddNewFile());
 	    mnFile.add(mntmAdd);
 	    
+	    JMenuItem mntmSaveAs = new JMenuItem("Save As");
+	    mntmSaveAs.addActionListener(new SaveToFile());
+	    
+	    JMenuItem mntmSave = new JMenuItem("Save");
+	    mntmSave.addActionListener(new ActionListener() {
+	    	public void actionPerformed(ActionEvent e) {
+	    		doClose("./testwrite.csv");
+	    	}
+	    });
+	    mnFile.add(mntmSave);
+	    mnFile.add(mntmSaveAs);
+	    
 	    /*
 	     * Adding panel and panel1 to splitPane
 	     */
 	    panel.setLayout(null);
 	    panel_1.setLayout(null);
 	    splitPane = new JSplitPane(JSplitPane.HORIZONTAL_SPLIT, panel, panel_1);
-
 	    splitPane.setBounds(0, 22, WIDTH, HEIGHT);
 	    splitPane.setDividerLocation(150);
 	    splitPane.setEnabled(false);
-	    add(splitPane);
-	    
-	    
+	    add(splitPane);	    
 	}
 	
 	/*
 	 * Write to file
 	 */
-	public static void doClose() {
-		myPats.writingToFile("./textwrite.csv");
+	public static void doClose(String filename) {
+		myPats.writingToFile(filename);
 	}
 	
 	/*
@@ -220,7 +234,7 @@ public class MainPanel extends JPanel{
 	    displayAPatient.getTableHeader().setReorderingAllowed(false);
 	    scrollPane2 = new JScrollPane(displayAPatient);
 	    scrollPane2.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_NEVER);
-	    scrollPane2.setBounds(50, 120, 555, 38);
+	    scrollPane2.setBounds(50, 155, 555, 38);
 	    panel_1.add(scrollPane2);
 	}
 	
@@ -236,21 +250,20 @@ public class MainPanel extends JPanel{
 		    lblWelcomeToMed = new JLabel("<html>Welcome to Med Records!");
 		    lblWelcomeToMed.setFont(new Font("Tahoma", Font.BOLD, 33));
 		    lblWelcomeToMed.setForeground(Color.WHITE);
-		    lblWelcomeToMed.setBounds(108, 73, 513, 93);
+		    lblWelcomeToMed.setBounds(110, 45, 513, 93);
 		    panel_1.add(lblWelcomeToMed);
 		    
 		    lblDeveloperLongtinHang = new JLabel("Developed by Longtin Hang");
 		    lblDeveloperLongtinHang.setFont(new Font("Tahoma", Font.BOLD, 20));
 		    lblDeveloperLongtinHang.setForeground(Color.WHITE);
-		    lblDeveloperLongtinHang.setBounds(190, 195, 310, 45);
+		    lblDeveloperLongtinHang.setBounds(190, 165, 310, 45);
 		    panel_1.add(lblDeveloperLongtinHang);
 		    
 		    label2 = new JLabel();
 		    tempImage2 = new ImageIcon ("giphy.gif");
 		    image2 = tempImage2.getImage().getScaledInstance(100, 100, java.awt.Image.SCALE_DEFAULT);
 	        label2.setIcon(new ImageIcon(image2));
-	        size2 = label2.getPreferredSize();
-	        label2.setBounds(275, 300, 100, 100);
+	        label2.setBounds(275, 285, 100, 100);
 	        panel_1.add(label2);
 	        repaint();
 		}
@@ -281,7 +294,7 @@ public class MainPanel extends JPanel{
     		    displayAllPatients.setDefaultEditor(Object.class, null);
     		    displayAllPatients.getTableHeader().setReorderingAllowed(false);
     		    scrollPane = new JScrollPane(displayAllPatients);
-    		    scrollPane.setBounds(50, 66, 550, 300);
+    		    scrollPane.setBounds(50, 66, 540, 360);
     		    scrollPane.setVerticalScrollBarPolicy(ScrollPaneConstants.VERTICAL_SCROLLBAR_ALWAYS);
     		    
     		    /*
@@ -307,7 +320,7 @@ public class MainPanel extends JPanel{
     		panel_1.removeAll();
     		
     		/*
-    		 * Adding comboBox and table to display
+    		 * comboBox and table to display
     		 */
     	    comboBox.addActionListener(new ActionListener() {
     	    	public void actionPerformed(ActionEvent e) {
@@ -322,7 +335,7 @@ public class MainPanel extends JPanel{
     	    });
     	    ArrayList<String> ids = myPats.getIds();
     	    comboBox.setModel(new DefaultComboBoxModel(ids.toArray()));
-    	    comboBox.setBounds(50, 66, 224, 23);
+    	    comboBox.setBounds(50, 75, 224, 23);
     	    tableForOnePatient();
     	    
     	    /*
@@ -332,7 +345,8 @@ public class MainPanel extends JPanel{
     	    lblPatientIdentification.setForeground(Color.WHITE);
     	    lblPatientIdentification.setFont(new Font("Tahoma", Font.BOLD, 21));
     	    lblPatientIdentification.setBackground(Color.BLACK);
-    	    lblPatientIdentification.setBounds(50, 25, 394, 51);
+    	    lblPatientIdentification.setBounds(50, 35, 394, 51);
+    	    
     	    panel_1.add(lblPatientIdentification);
     	    panel_1.add(btnEdit);
     	    panel_1.add(comboBox);
@@ -357,6 +371,7 @@ public class MainPanel extends JPanel{
     	    }
     		rdbtnDp.setVisible(true);
     		rdbtnCr.setVisible(true);
+    		
     		panel_1.add(btnDone);
     		panel_1.add(btnRemove);
     		panel_1.add(rdbtnDp);
@@ -409,5 +424,20 @@ public class MainPanel extends JPanel{
 			}
 			o.actionPerformed(e);
 		}
+	}
+	
+	/*
+	 * save as to file
+	 */
+	private class SaveToFile implements ActionListener{
+		public void actionPerformed(ActionEvent e) {
+			JFileChooser fileChooser = new JFileChooser("./");
+			JButton save = new JButton("Save to file");
+			JTextArea textArea = new JTextArea(24, 80);
+		    int retval = fileChooser.showSaveDialog(save);
+		    if (retval == JFileChooser.APPROVE_OPTION) {
+		    	doClose(fileChooser.getSelectedFile().toString() + ".csv");
+		    }
+		}	
 	}
 }

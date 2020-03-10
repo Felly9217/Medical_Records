@@ -18,7 +18,7 @@ public class MainFrame {
 		frame.setVisible(true);
 		frame.addWindowListener(new WindowAdapter() {
 			public void windowClosing(WindowEvent we) {
-				MainPanel.doClose();
+				MainPanel.doClose("./testwrite.csv");
 			}
 		});
 
