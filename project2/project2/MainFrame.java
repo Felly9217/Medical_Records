@@ -1,3 +1,12 @@
+//**************************************************************************************
+// Name:        Longtin Hang
+// Course:	   Java Development CSCI 3381 9:00am
+// Assignment: Project 2
+// Description: This program is read patient files and predict the patient progression
+// 			   and update the file with newly added patients with GUI integration.
+//**************************************************************************************
+
+
 package project2;
 
 import javax.swing.JFrame;
