@@ -6,6 +6,6 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="./gitProject2/project2/PatientCollection.jar"/>
+	<classpathentry kind="lib" path="./project2/PatientCollection.jar"/>
 	<classpathentry kind="output" path=""/>
 </classpath>
