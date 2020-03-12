@@ -6,6 +6,6 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/longt/Desktop/Generals/School/Java Development/gitProject2/project2/PatientCollection.jar"/>
+	<classpathentry kind="lib" path="./gitProject2/project2/PatientCollection.jar"/>
 	<classpathentry kind="output" path=""/>
 </classpath>
