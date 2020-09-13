@@ -1,6 +1,6 @@
 # CSCI3381project2
 Manager - GUI with backend
-![Screenshots](https://github.com/Felly9217/Tic-Tac-Toe/blob/master/Screenshots%20for%20portfolio/tictactoe.PNG)
-![Screenshots](https://github.com/Felly9217/Tic-Tac-Toe/blob/master/Screenshots%20for%20portfolio/tictactoe2.PNG)
-![Screenshots](https://github.com/Felly9217/Tic-Tac-Toe/blob/master/Screenshots%20for%20portfolio/tictactoe.PNG)
-![Screenshots](https://github.com/Felly9217/Tic-Tac-Toe/blob/master/Screenshots%20for%20portfolio/tictactoe2.PNG)
+![Screenshots](https://github.com/Felly9217/Medical_Records/blob/master/Medical%20Records/Medical%20Records.PNG)
+![Screenshots](https://github.com/Felly9217/Medical_Records/blob/master/Medical%20Records/Medical%20Records%202.PNG)
+![Screenshots](https://github.com/Felly9217/Medical_Records/blob/master/Medical%20Records/Medical%20Records%203.PNG)
+![Screenshots](https://github.com/Felly9217/Medical_Records/blob/master/Medical%20Records/Medical%20Records%204.PNG)
