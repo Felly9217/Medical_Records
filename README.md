@@ -13,4 +13,5 @@ Manager - GUI with backend</br>
 # Search Page</br>
 
 ![Screenshots](https://github.com/Felly9217/Medical_Records/blob/master/Medical%20Records/Medical%20Records%203.PNG)</br>
+#
 ![Screenshots](https://github.com/Felly9217/Medical_Records/blob/master/Medical%20Records/Medical%20Records%204.PNG)</br>
